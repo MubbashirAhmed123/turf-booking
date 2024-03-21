@@ -24,7 +24,6 @@ const turfSlice = createSlice({
 
 
     bookSlot(state, action) {
-      console.log(state.allSlots)
 
       const { turfName } = action.payload
       console.log(action.payload)
@@ -66,29 +65,24 @@ const turfSlice = createSlice({
 
 })
 
-const addToSlot = (state, action, turf) => {
+const addToSlot = (state, action) => {
 
-  const { date, from, to, turfName } = action.payload
+  const {from, to, turfName } = action.payload
 
   const isSlotAvailable = state.allSlots.some(slot => {
 
-    const newStart = new Date(date + 'T' + from)
-    const newEnd = new Date(date + 'T' + to)
-    const existingStart = new Date(slot.date + 'T' + slot.from)
-    const existingEnd = new Date(slot.date + 'T' + slot.to)
     const sameTurf = turfName === slot.turfName
 
-    const dateOverLap = newStart < existingEnd && newEnd > existingStart
+    const overlap = (new Date(from) < new Date(slot.to)) && (new Date(to) > new Date(slot.from))
 
-    return sameTurf && dateOverLap
+    return sameTurf && overlap
   })
 
   console.log(isSlotAvailable)
   if (!isSlotAvailable) {
 
-    // turf.push({ ...action.payload })
     sendToDb(action.payload)
-    toast.success('your slot have been booked successfully!')
+    toast.success('Your Slot Has Been Booked Successfully!')
 
   } else {
     toast.info('Already That Time Slots Is Booked.')
@@ -152,7 +146,7 @@ const removeSlotFromDb = async (id) => {
     const result = await response.json()
     console.log(result)
 
-   } catch (error) {
+  } catch (error) {
     console.log(error)
   }
 

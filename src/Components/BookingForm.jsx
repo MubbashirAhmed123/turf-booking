@@ -13,7 +13,6 @@ function BookingForm({ selectedTurf }) {
     name: '',
     price: selectedTurf.price,
     turfName: selectedTurf.turfName,
-    date: '',
     from: '',
     to: '',
   })
@@ -23,17 +22,14 @@ function BookingForm({ selectedTurf }) {
     const { name, value } = e.target
     setDetails({ ...details, [name]: value })
   }
-  const fromTime = details.from.split(':')
-  const toTime = details.to.split(':')
-  const total_no_of_hrs = +toTime[0] - +fromTime[0]
 
 
+  const timeDiff=Math.ceil((new Date(details.to))-new Date(details.from))/(1000 * 60 *60)
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-
-    const addedSucc=dispatch(bookSlot({...details, totalPrice: details.price*total_no_of_hrs }))
-    console.log(addedSucc)
+    
+   dispatch(bookSlot({ ...details, totalPrice: details.price * timeDiff.toFixed(2) }))
 
     navigate('/')
   }
@@ -41,6 +37,9 @@ function BookingForm({ selectedTurf }) {
   return (
     <>
       <div className='mt-10'>
+        <p className='text-red-400 p-2 text-center font-semibold'><span className='text-red-400 font-bold text-lg'>Note: </span> Make sure to  select correct date and time 1-11 AM | 12-23 PM.
+        <br />
+        Time is based on <span className='font-bold'>24hrs</span></p>
 
         <motion.form className="max-w-md mx-auto p-5" onSubmit={handleSubmit} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}>
 
@@ -48,10 +47,10 @@ function BookingForm({ selectedTurf }) {
           <p className='mt-3 mb-5 text-lg font-semibold text-gray-500'>Booking slot in <span className='font-bold text-gray-600'>{selectedTurf.turfName}</span>
 
           </p>
-          <Link to='/booked_slots' className=' py-3 px-3 bg-blue-400 rounded-md'>See Booked Slots</Link>
+          <Link to='/booked_slots' className=' py-3 px-3  bg-blue-400 rounded-md sm:hidden'>See Booked Slots</Link>
 
 
-          <div className="mt-3 relative z-0 w-full mb-5 group">
+          <div className="mt-5 relative z-0 w-full mb-5 group sm:mt-0">
             <label htmlFor="turfName" className="text-gray-700 font-bold">Turf Name</label>
 
             <input type="text" name="turfName" id="turfName" className="block py-1 px-0 w-full text-sm text-black font-bold  bg-transparent border-0 border-b-2 border-gray-300 appearance-none   dark:border-gray-600  focus:outline-none  cursor-not-allowed" placeholder=" " value={selectedTurf.turfName} readOnly />
@@ -68,21 +67,21 @@ function BookingForm({ selectedTurf }) {
 
             <input type="text" name="name" id="name" className="block py-1 px-0 w-full text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none   dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required value={details.name} onChange={handleChange} />
           </div>
-          <div className="relative z-0 w-full mb-5 group">
+          {/* <div className="relative z-0 w-full mb-5 group">
             <label htmlFor="date" className="text-gray-700 font-bold">Date</label>
 
             <input type="date" name="date" id="date" className="block py-1 px-0 w-full text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none   dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-700 peer" placeholder=" " required value={details.date} onChange={handleChange} />
-          </div>
+          </div> */}
           <div className="relative z-0 w-full mb-5 group">
             <label htmlFor="from" className="text-gray-700 font-bold">From</label>
 
-            <input type="time" name="from" id="from" className="block py-1 px-0 w-full text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none   dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-700 peer" placeholder=" " required value={details.time} onChange={handleChange} />
+            <input type="datetime-local" name="from" id="from" className="block py-1 px-0 w-full text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none   dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-700 peer" placeholder=" " required value={details.time} onChange={handleChange} />
           </div>
 
           <div className="relative z-0 w-full mb-5 group">
             <label htmlFor="to" className="text-gray-700 font-bold">To</label>
 
-            <input type="time" name="to" id="to" className="block py-1 px-0 w-full text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none   dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-700 peer" placeholder=" " required value={details.time} onChange={handleChange} />
+            <input type="datetime-local" name="to" id="to" className="block py-1 px-0 w-full text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none   dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-700 peer" placeholder=" " required value={details.time} onChange={handleChange} />
           </div>
 
           <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Book Slot</button>

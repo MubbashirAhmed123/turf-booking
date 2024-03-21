@@ -4,7 +4,6 @@ import { fetchdata } from "../store/turfSlice"
 function BookedSlots() {
 
   const { allSlots } = useSelector(state => state.turf)
-  console.log('allSlots',allSlots)
 
 
   const dispatch = useDispatch()
@@ -15,12 +14,12 @@ function BookedSlots() {
   }, [dispatch])
   return (
     <>
+
     <div className='p-2 ' >
         {
             allSlots?.length>0 ? allSlots.map((ele,index)=>(
                 <ul key={index} className="p-2">
                   <li>Tur Name: {ele.turfName}</li>
-                    <li>Date: {ele.date}</li>
                     <li>From: {ele.from}</li>
                     <li>To: {ele.to}</li>
                     <hr className='bg-gray-900 text-gray-800 h-[2px] mt-3' />

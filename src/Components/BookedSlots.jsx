@@ -20,8 +20,8 @@ function BookedSlots() {
             allSlots?.length>0 ? allSlots.map((ele,index)=>(
                 <ul key={index} className="p-2">
                   <li>Tur Name: {ele.turfName}</li>
-                    <li>From: {ele.from}</li>
-                    <li>To: {ele.to}</li>
+                    <li>From: {ele.from.split('T')[1]>'12:00' ? ele.from+' PM' :ele.from+' AM'}</li>
+                    <li>To: {ele.to.split('T')[1]>'12:00' ? ele.to+' PM' :ele.to+' AM'}</li>
                     <hr className='bg-gray-900 text-gray-800 h-[2px] mt-3' />
                 </ul>
             )):

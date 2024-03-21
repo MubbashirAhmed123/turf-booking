@@ -23,9 +23,9 @@ function BookingForm({ selectedTurf }) {
     setDetails({ ...details, [name]: value })
   }
 
-
-  const timeDiff=Math.ceil((new Date(details.to))-new Date(details.from))/(1000 * 60 *60)
-
+  console.log(new Date(details.to),new Date(details.from))
+  const timeDiff=Math.ceil((new Date(details.to)) - new Date(details.from))/(1000 * 60 *60)
+  
   const handleSubmit = async (e) => {
     e.preventDefault()
     

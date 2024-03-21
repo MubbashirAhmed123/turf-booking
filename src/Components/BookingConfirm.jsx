@@ -10,8 +10,8 @@ function BookingConfirm() {
 
   const { allSlots } = useSelector(state => state.turf)
   const len = allSlots.length
-  let fromTime=allSlots[len-1]?.from.split('T')[1]
-  let toTime=allSlots[len-1]?.to.split('T')[1]
+
+
 
   const [display, setDisplay] = useState(false)
 
@@ -40,8 +40,8 @@ function BookingConfirm() {
               <h1 className="mb-3 ">Turf Name : <span className="font-bold text-gray-800 mx-5"> {ele?.turfName}</span></h1>
               <h1 className="mb-3">Price per hr : <span className="font-bold text-gray-800 mx-5">{ele?.price}</span></h1>
               <h1 className="mb-3">User name :  <span className="font-bold text-gray-800 mx-5">{ele?.name}</span></h1>
-              <h1 className="mb-3">From : <span className="font-bold text-gray-800 mx-5">{fromTime>'12:00'? ele?.from+' PM':ele?.from+' AM'}</span></h1>
-              <h1 className="mb-3">To : <span className="font-bold text-gray-800 mx-5">{toTime>'12:00'? ele?.to+' PM':ele?.to+' AM'}</span></h1>
+              <h1 className="mb-3">From : <span className="font-bold text-gray-800 mx-5">{ele?.from && ele?.from.split('T')[1] > '12:00' ? ele?.from +' PM' : ele?.from+'AM'}</span></h1>
+              <h1 className="mb-3">To : <span className="font-bold text-gray-800 mx-5">{ele?.to && ele?.to.split('T')[1] > '12:00' ? ele?.to +' PM' : ele?.to+' AM'}</span></h1>
               <h1 className="mb-3">Total Price To Pay : <span className="font-bold text-gray-800 mx-5">{ele?.totalPrice}</span></h1>
 
             </div>

@@ -46,7 +46,7 @@ function Navbar() {
         <Link to='/' ><FontAwesomeIcon icon={faHouse} size="lg" /></Link>
         <Link className=" font-bold" to='/booking'>Book Turf</Link>
 
-        <Link to='/booking_confirmation' className="bg-green-300 px-2 py-2 rounded font-semibold hover:bg-gray-400 transition">Your booking</Link>
+        <Link to='/booking_confirmation' className="bg-green-300 px-2 py-2 rounded font-semibold hover:bg-green-400 transition">Your booking</Link>
         <Link to='/booked_slots' className="py-2 px-1 rounded bg-green-300 font-semibold hover:bg-green-500 transition">See Booked Slots</Link>
       </ul>
     </div>

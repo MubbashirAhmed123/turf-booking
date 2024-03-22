@@ -5,7 +5,7 @@ function BookedSlots() {
 
   const { allSlots } = useSelector(state => state.turf)
 
-  const[selectedValue,setSelectedValue]=useState('')
+  const[selectedValue,setSelectedValue]=useState('all')
 
  const turfname=[...new Set(allSlots.map(turf => turf.turfName))]
 

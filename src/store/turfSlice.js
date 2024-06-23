@@ -68,13 +68,32 @@ const addToSlot = (state, action) => {
   const {from, to, turfName } = action.payload
 
   const isSlotAvailable = state.allSlots.some(slot => {
+    const sameTurf = turfName === slot.turfName;
 
-    const sameTurf = turfName === slot.turfName
+    const slotFrom = new Date(slot.from);
+    const slotTo = new Date(slot.to);
+    const newFrom = new Date(from);
+    const newTo = new Date(to);
 
-    const overlap = (new Date(from)<new Date(slot.to)) && (new Date(to)>new Date(slot.from))
+    // Check for partial overlap
+    const partialOverlap = (newFrom < slotTo) && (newTo > slotFrom);
 
-    return sameTurf && overlap
-  })
+    // Check if the new slot is entirely within the existing slot
+    const completeOverlap = (newFrom >= slotFrom) && (newTo <= slotTo);
+
+    // Return true if it's the same turf and there's any kind of overlap
+    return sameTurf && (partialOverlap || completeOverlap);
+  });
+
+
+  // const isSlotAvailable = state.allSlots.some(slot => {
+
+  //   const sameTurf = turfName === slot.turfName
+
+  //   const overlap = (new Date(from)<new Date(slot.to)) && (new Date(to)>new Date(slot.from))
+
+  //   return sameTurf && overlap
+  // })
 
   // console.log(isSlotAvailable)
   if (!isSlotAvailable) {

@@ -24,7 +24,7 @@ function Navbar() {
     <>
      <div className="sm:hidden ">
       <FontAwesomeIcon icon={faArrowRight}size="xl" className="m-3" onClick={handleMenu}/>
-      <Link to='/admin' className="fixed top-2 right-5 px-2 py-2 rounded bg-green-400/70 text-green-700 font-bold hover:bg-green-400">Admin</Link>
+      {/* <Link to='/admin' className="fixed top-2 right-5 px-2 py-2 rounded bg-green-400/70 text-green-700 font-bold hover:bg-green-400">Admin</Link> */}
     </div>
    
    {menu &&
@@ -51,7 +51,7 @@ function Navbar() {
 
         <Link to='/booking_confirmation' className="bg-green-300 px-2 py-2 rounded font-semibold hover:bg-green-400 transition">Your booking</Link>
         <Link to='/booked_slots' className="py-2 px-1 rounded bg-green-300 font-semibold hover:bg-green-500 transition">See Booked Slots</Link>
-         <Link to='/admin/login' className="py-2 px-2 bg-green-500/80 font-semibold rounded  hover:bg-green-500 transition ">Admin</Link>
+         {/* <Link to='/admin/login' className="py-2 px-2 bg-green-500/80 font-semibold rounded  hover:bg-green-500 transition ">Admin</Link> */}
       </ul>
     </div>
 

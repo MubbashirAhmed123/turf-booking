@@ -11,6 +11,7 @@ function BookingForm({ selectedTurf }) {
 
   const [details, setDetails] = useState({
     name: '',
+    phone_number:'',
     price: selectedTurf.price,
     turfName: selectedTurf.turfName,
     from: '',
@@ -64,13 +65,13 @@ function BookingForm({ selectedTurf }) {
           <div className="relative z-0 w-full mb-5 group">
             <label htmlFor="name" className="text-gray-700 font-bold">Name</label>
 
-            <input type="text" name="name" id="name" className="block py-1 px-0 w-full text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none   dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required value={details.name} onChange={handleChange} />
+            <input type="text" maxLength={10} name="name" id="name" className="block py-1 px-0 w-full text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none   dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required value={details.name} onChange={handleChange} />
           </div>
-          {/* <div className="relative z-0 w-full mb-5 group">
-            <label htmlFor="date" className="text-gray-700 font-bold">Date</label>
+          <div className="relative z-0 w-full mb-5 group">
+            <label htmlFor="phone_number" className="text-gray-700 font-bold">Phone Number</label>
 
-            <input type="date" name="date" id="date" className="block py-1 px-0 w-full text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none   dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-700 peer" placeholder=" " required value={details.date} onChange={handleChange} />
-          </div> */}
+            <input type="number" maxLength={10} name="phone_number" id="phone_number" className="block py-1 px-0 w-full text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none   dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-700 peer" placeholder=" " required value={details.phone_number} onChange={handleChange} />
+          </div>
           <div className="relative z-0 w-full mb-5 group">
             <label htmlFor="from" className="text-gray-700 font-bold">From</label>
 

@@ -33,15 +33,15 @@ function Home() {
         {
           turf.map((ele,index) => (
 
-            <div key={index} className=" max-w-[400px] max-h-sm rounded-md  overflow-hidden shadow-lg shadow-black/20 hover:scale-110 transition cursor-pointer bg-green-300 ">
-              <img className="mx-auto w-full object-cover " src={ele.img} alt=''/>
+            <div key={index} className=" w-[400px] h-auto relative rounded-md  overflow-hidden shadow-lg shadow-black/20 hover:scale-110 transition cursor-pointer bg-green-300 ">
+              <img className="w-full h-[200px] object-cover " src={ele.img} alt=''/>
                 <div className="px-6 py-4">
                   <div className="font-bold text-xl mb-2">{ele.turfName}</div>
                   <p className="text-gray-700 text-base">
                     {ele.desc}
                   </p>
                 </div>
-                <div className=" relative  mt-5 px-6 pt-4 pb-2 ">
+                <div className="   mt-5 px-6 pt-4 pb-2 ">
                   <img src={ele.cricket} alt="" className='h-10 absolute bottom-1 ' />
                   <img src={ele.football} alt="" className='h-10 absolute bottom-1 left-[90px]' />
                   <img src={ele.vallyball} alt="" className='h-10 absolute bottom-1 left-[180px]' />

@@ -4,8 +4,7 @@ import { baseUrl } from "../baseUrl";
 
 const initialState = {
   allSlots: [],
-  hrSport: [],
-  turf2: [],
+  isLoggedIn:false
 
 }
 
@@ -15,6 +14,11 @@ const turfSlice = createSlice({
   name: 'turf',
   initialState,
   reducers: {
+
+
+    handleLogin(state){
+      state.isLoggedIn=true
+    },
 
     setSlots(state, action) {
 
@@ -28,29 +32,21 @@ const turfSlice = createSlice({
       const { turfName } = action.payload
       console.log(action.payload)
 
-      if (turfName === 'H R Sports Arena') {
-        addToSlot(state, action, state.hrSport)
+      const turfList = [
+        "H R Sports Arena",
+        "Orbit Play Arena",
+        "Patel Sports Hub",
+        "Battle Ground Sports Arena",
+        "KBN Turf",
+      ];
 
+      if (turfList.includes(turfName)) {
+        addToSlot(state, action);
+      } else {
+        console.log("no turf");
       }
-      else if (turfName === 'Orbit Play Arena') {
-        addToSlot(state, action, state.turf2)
 
-      }
-      else if (turfName === 'Patel Sports Hub') {
-        addToSlot(state, action, state.turf2)
-
-      }
-      else if (turfName === 'Battle Ground Sports Arena') {
-        addToSlot(state, action, state.turf2)
-
-      }
-      else if (turfName === 'KBN Turf') {
-        addToSlot(state, action, state.turf2)
-
-      }
-      else {
-        console.log('no turf')
-      }
+    
 
     },
 
@@ -59,6 +55,8 @@ const turfSlice = createSlice({
       removeSlotFromDb({ _id: action.payload })
 
     },
+
+
 
   },
 
@@ -73,16 +71,16 @@ const addToSlot = (state, action) => {
 
     const sameTurf = turfName === slot.turfName
 
-    const overlap = (new Date(from) < new Date(slot.to)) && (new Date(to) > new Date(slot.from))
+    const overlap = (new Date(from)<new Date(slot.to)) && (new Date(to)>new Date(slot.from))
 
     return sameTurf && overlap
   })
 
-  console.log(isSlotAvailable)
+  // console.log(isSlotAvailable)
   if (!isSlotAvailable) {
 
     sendToDb(action.payload)
-    toast.success('Your Slot Has Been Booked Successfully!')
+    // toast.success('Your Slot Has Been Booked Successfully!')
 
   } else {
     toast.info('Already That Time Slots Is Booked.')
@@ -94,7 +92,7 @@ const addToSlot = (state, action) => {
 
 
 
-export const { bookSlot, removeSlot, setSlots } = turfSlice.actions
+export const { bookSlot, removeSlot, setSlots,handleLogin } = turfSlice.actions
 export default turfSlice.reducer
 
 export const fetchdata = () => async (dispatch) => {
@@ -121,6 +119,12 @@ const sendToDb = async (data) => {
 
     const result = await response.json()
     console.log(result)
+    if(response.status===200){
+      toast.success(result.msg)
+
+    }else{
+      toast.error(result.msg)
+    }
 
   } catch (error) {
     console.log(error)
@@ -144,6 +148,14 @@ const removeSlotFromDb = async (id) => {
     });
 
     const result = await response.json()
+    if(response.status===200){
+      toast.success(result.msg)
+
+    }else{
+      toast.error(result.msg)
+    }
+    // toast.success('Your Booking Has Been Cancelled')
+
     console.log(result)
 
   } catch (error) {
@@ -151,5 +163,7 @@ const removeSlotFromDb = async (id) => {
   }
 
 }
+
+
 
 

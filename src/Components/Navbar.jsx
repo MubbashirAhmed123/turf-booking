@@ -3,13 +3,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faArrowRight, faBackward, faClose,  faHouse } from "@fortawesome/free-solid-svg-icons"
 import { useState } from "react"
 import { motion } from "framer-motion"
-import { useSelector } from "react-redux"
 function Navbar() {
-  const isAuth=localStorage.getItem('auth')
+  
   const[menu,SetMenu]=useState(false)
   const location=useLocation()
   const navigate=useNavigate()
-  const cuurentPath=location.pathname
+  const currentPath=location.pathname
   
   const handleClick=()=>{
      navigate(-1)
@@ -24,7 +23,7 @@ function Navbar() {
     <>
      <div className="sm:hidden ">
       <FontAwesomeIcon icon={faArrowRight}size="xl" className="m-3" onClick={handleMenu}/>
-      {/* <Link to='/admin' className="fixed top-2 right-5 px-2 py-2 rounded bg-green-400/70 text-green-700 font-bold hover:bg-green-400">Admin</Link> */}
+      <Link to='/admin/login' className="fixed top-2 right-5 px-2 py-2 rounded bg-green-400/70 text-green-700 font-bold hover:bg-green-400">Admin</Link>
     </div>
    
    {menu &&
@@ -37,7 +36,7 @@ function Navbar() {
         <Link className="mb-8 font-semibold" to='/booking_confirmation'  >Your booking</Link>
         <Link className="mb-8 font-semibold" to='/booked_slots'>See booked slots</Link>
         <FontAwesomeIcon icon={faClose} size="lg" className="absolute top-1 right-2" onClick={()=>SetMenu(false)}/>
-        {cuurentPath==='/' ?'' : <li className="mb-5"> <FontAwesomeIcon icon={faBackward} className="cursor-pointer" onClick={()=>handleClick()} /></li>}
+        {currentPath==='/' ?'' : <li className="mb-5"> <FontAwesomeIcon icon={faBackward} className="cursor-pointer" onClick={()=>handleClick()} /></li>}
       </motion.ul>
       </div>
 
@@ -45,13 +44,13 @@ function Navbar() {
 
     <div className='hidden sm:block container mx-auto sticky top-0 w-screen z-10 bg-green-200  shadow-md overflow-auto  '>
       <ul className='flex justify-center items-center  p-2  sm:gap-10 md:gap-16 lg:gap-24 overflow-x-auto '>
-       {cuurentPath==='/' ?'' :  <FontAwesomeIcon icon={faBackward} className="cursor-pointer" onClick={()=>handleClick()} />}
+       {currentPath==='/' ?'' :  <FontAwesomeIcon icon={faBackward} className="cursor-pointer" onClick={()=>handleClick()} />}
         <Link to='/' ><FontAwesomeIcon icon={faHouse} size="lg" /></Link>
         <Link className="py-2 px-2 rounded bg-green-300 font-semibold hover:bg-green-500 transition" to='/booking'>Book Turf</Link>
 
         <Link to='/booking_confirmation' className="bg-green-300 px-2 py-2 rounded font-semibold hover:bg-green-400 transition">Your booking</Link>
         <Link to='/booked_slots' className="py-2 px-1 rounded bg-green-300 font-semibold hover:bg-green-500 transition">See Booked Slots</Link>
-         {/* <Link to='/admin/login' className="py-2 px-2 bg-green-500/80 font-semibold rounded  hover:bg-green-500 transition ">Admin</Link> */}
+         <Link to='/admin/login' className="py-2 px-2 bg-green-500/80 font-semibold rounded  hover:bg-green-500 transition ">Admin</Link>
       </ul>
     </div>
 

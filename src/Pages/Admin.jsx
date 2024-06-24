@@ -1,19 +1,16 @@
-import React, { useEffect, useState } from 'react'
+import React, {useState } from 'react'
 import { turf } from '../data/data'
 import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
-import { handleLogin } from '../store/turfSlice'
 import { baseUrl } from '../baseUrl'
 
 
 function Admin() {
 
-    const dispatch = useDispatch()
     const [loginData, setLoginData] = useState({
-        email: 'hrsportarena@gmail.com',
+        email: '',
         turfName: '',
-        password: 'HrSports@123'
+        password: ''
 
     })
 
@@ -32,23 +29,25 @@ function Admin() {
         try {
             const res = await fetch(`${baseUrl}/login`, {
                 method: 'POST',
+               
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    
                 },
-                body: JSON.stringify(loginData)
+                body: JSON.stringify(loginData),
+                credentials: 'include',
             });
 
             const data = await res.json()
-            if (res.status === 400) {
+            if (res.status === 404) {
                 toast.error(data.msg)
                 return
 
             } else {
-                dispatch(handleLogin())
                 toast.success(data.msg)
-            
+
                 navigate(`/admin/dashboard/${data.name}`)
-               
+
             }
         } catch (err) {
             toast.error('login failed!', err)
@@ -62,7 +61,7 @@ function Admin() {
         <div className='flex justify-center mt-10 '>
 
             <form className='bg-green-200 p-2 rounded-md shadow-md max-w-96' onSubmit={handleSubmit}>
-                <fieldset className='text-center text-gray-600'>login to see your turf information</fieldset>
+                <fieldset className='text-center text-gray-600'>Login To See Your Turf Booking</fieldset>
                 <div className='m-5'>
                     <label htmlFor="email">Email</label>
                     <br />

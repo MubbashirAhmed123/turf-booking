@@ -1,47 +1,81 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { fetchdata, removeSlot } from '../store/turfSlice'
 import { toast } from 'react-toastify'
+import { baseUrl } from '../baseUrl'
 function Dashboard() {
 
-  const { name } = useParams()
   const { allSlots } = useSelector(state => state.turf)
+  const [name, setName] = useState('')
   const dispatch = useDispatch()
-  const navigate=useNavigate()
+  const navigate = useNavigate()
 
-
-  console.log(allSlots)
 
   const turfs = allSlots.filter((turf) => {
     return turf.turfName === name
   })
-  console.log(turfs)
 
   const handleClick = (id) => {
 
-    const res=window.confirm('Are you sure you want to delete this booking?')
-    if(res){
+    const res = window.confirm('Are you sure you want to cancel this booking?')
+    if (res) {
       dispatch(removeSlot(id))
-
-      
     }
 
     dispatch(fetchdata())
   }
 
-  const handleLogOut=()=>{
-   
-    // toast.info('logout successfully!')
-    // navigate('/admin/login')
+  const handleLogOut = async () => {
+
+    try {
+      const res = await fetch(`${baseUrl}/logout`, { credentials: 'include' })
+      const data = await res.json()
+      if (res.ok) {
+        toast.success(data.msg)
+        navigate('/admin/login')
+      } else {
+        toast.error(data.msg)
+      }
+    } catch (error) {
+      toast.error(error)
+
+    }
+
   }
 
 
   useEffect(() => {
-    console.log('mount')
+    const fetchInfo = async () => {
+      try {
+        const res = await fetch(`${baseUrl}/dashboard`, {
+
+          credentials: 'include',
+
+        })
+        const data = await res.json()
+
+        if (res.status===403) {
+          
+          navigate('/admin/login')  
+
+        } else {
+          setName(data.name)
+        }
+      } catch (error) {
+        navigate('/admin/login')
+
+      }
+    }
+    fetchInfo()
+
+  }, [navigate])
+
+
+  useEffect(() => {
     dispatch(fetchdata())
-    
-// eslint-disable-next-line
+
+    // eslint-disable-next-line
   }, [])
 
 
@@ -50,7 +84,13 @@ function Dashboard() {
   return (
     <>
       <div>
+        <header className='flex justify-around items-center mb-10 mt-5'>
         <h1 className='text-xl font-bold text-gray-600 mt-5 text-center sm:text-2xl md:text-3xl'>Dashboard of <span className='font-extrabold text-gray-700'> {name}</span></h1>
+        <div className=' '>
+          <button className='p-2 bg-red-400 text-white font-semibold rounded hover:bg-red-500/70' onClick={handleLogOut}>Log Out</button>
+        </div>
+        </header>
+        
 
         {
           turfs.length > 0 ? turfs.map((t, i) => (
@@ -67,12 +107,10 @@ function Dashboard() {
           )) : <div className='bg-red-300 p-2 text-center text-red-700 font-bold'> No Booking Yet!</div>
         }
 
-        <div className='fixed right-36 mt-5  '>
-          <button className='p-2 bg-red-400 text-white font-semibold rounded hover:bg-red-500/70' onClick={handleLogOut}>Log Out</button>
-        </div>
+        
       </div>
 
-     
+
     </>
   )
 }

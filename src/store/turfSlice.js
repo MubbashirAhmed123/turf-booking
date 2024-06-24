@@ -4,7 +4,6 @@ import { baseUrl } from "../baseUrl";
 
 const initialState = {
   allSlots: [],
-  isLoggedIn:false
 
 }
 
@@ -16,9 +15,6 @@ const turfSlice = createSlice({
   reducers: {
 
 
-    handleLogin(state){
-      state.isLoggedIn=true
-    },
 
     setSlots(state, action) {
 
@@ -175,7 +171,6 @@ const removeSlotFromDb = async (id) => {
     }
     // toast.success('Your Booking Has Been Cancelled')
 
-    console.log(result)
 
   } catch (error) {
     console.log(error)

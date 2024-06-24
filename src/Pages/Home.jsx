@@ -6,7 +6,7 @@ import { turf } from '../data/data'
 function Home() {
   return (
     < >
-      <div className='sm:mt-10 p-5 rounded-md flex flex-col justify-between items-center  sm:flex-row sm:justify- sm:gap-10'>
+      <div className='sm:mt-10 p-5 rounded-md flex flex-col justify-around items-center  sm:flex-row sm:justify- sm:gap-10'>
         <div className='mt-5'>
           <h1 className=' font-bold text-2xl md:text-4xl mb-10'>Turf Play Ground</h1>
           <p className='leading-relaxed w-full text-gray-800 font-semibold md:text-lg sm:w-[300px] lg:w-[500px]'>Looking for a convenient way to book turf for your favorite sports activities? Look no further! Our turf booking platform offers a seamless and hassle-free experience for all your sporting needs.</p>
@@ -29,7 +29,7 @@ function Home() {
       </div>
 
 
-      <div className='mt-10 p-5 flex flex-wrap gap-20 '>
+      <div className='mt-10 p-5 flex flex-wrap gap-20 justify-center '>
         {
           turf.map((ele,index) => (
 

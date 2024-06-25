@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { baseUrl } from '../baseUrl'
 
 
-function Admin() {
+function Admin({setIsLoggedIn}) {
 
     const [loginData, setLoginData] = useState({
         email: '',
@@ -26,6 +26,13 @@ function Admin() {
     const handleSubmit = async (e) => {
         e.preventDefault()
 
+        const{email,turfName,password}=loginData
+
+        if(!(email && password && turfName)){
+            alert('all feilds are required.')
+            return
+        }
+
         try {
             const res = await fetch(`${baseUrl}/login`, {
                 method: 'POST',
@@ -35,17 +42,16 @@ function Admin() {
                     
                 },
                 body: JSON.stringify(loginData),
-                credentials: 'include',
             });
 
             const data = await res.json()
             if (res.status === 404) {
                 toast.error(data.msg)
-                return
 
             } else {
                 toast.success(data.msg)
-
+                setIsLoggedIn(true)
+                localStorage.setItem('name',data.name)
                 navigate(`/admin/dashboard/${data.name}`)
 
             }
@@ -68,9 +74,9 @@ function Admin() {
                     <input type="email" name="email" id="email" className='outline-none rounded p-1 bg-gray-100 hover:bg-white  focus:ring transition' value={loginData.email} onChange={handleChange} required />
                 </div>
                 <div className='m-5'>
-                    <select name="turfName" id="" className='p-2 rounded-md' onChange={handleChange}  >
+                    <select name="turfName" id="" className='p-2 rounded-md' onChange={handleChange} required   >
 
-                        <option value="select turf" name='turfName' selected disabled  >Select Turf</option>
+                        <option value="select turf" name='turfName'  selected disabled  >Select Turf</option>
 
                         {turf.map((turf, index) => <option key={index} value={turf.turfName} >{turf.turfName}</option>)}
                     </select>

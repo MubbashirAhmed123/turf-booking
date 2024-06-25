@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { fetchdata, removeSlot } from '../store/turfSlice'
 import { toast } from 'react-toastify'
 import { baseUrl } from '../baseUrl'
-function Dashboard() {
+function Dashboard({setIsLoggedIn}) {
 
   const { allSlots } = useSelector(state => state.turf)
-  const [name, setName] = useState('')
+
   const dispatch = useDispatch()
   const navigate = useNavigate()
-
+  const name=localStorage.getItem('name')
 
   const turfs = allSlots.filter((turf) => {
     return turf.turfName === name
@@ -28,55 +28,37 @@ function Dashboard() {
 
   const handleLogOut = async () => {
 
-    try {
-      const res = await fetch(`${baseUrl}/logout`, { credentials: 'include' })
-      const data = await res.json()
-      if (res.ok) {
-        toast.success(data.msg)
-        navigate('/admin/login')
-      } else {
-        toast.error(data.msg)
-      }
-    } catch (error) {
-      toast.error(error)
-
-    }
-
+    toast.success('logout successfully')
+    navigate('/admin/login')
+    localStorage.removeItem('name')
+    setIsLoggedIn(false)
   }
-
 
   useEffect(() => {
     const fetchInfo = async () => {
+
       try {
-        const res = await fetch(`${baseUrl}/dashboard`, {
+        const res = await fetch(`${baseUrl}/dashboard`);
 
-          credentials: 'include',
-
-        })
-        const data = await res.json()
-
-        if (res.status===403) {
-          
-          navigate('/admin/login')  
-
+        if (res.ok) {
+          const data = await res.json();
         } else {
-          setName(data.name)
+          setIsLoggedIn(false)
+          toast.error('Unauthorized');
+          navigate('/admin/login');
         }
       } catch (error) {
-        navigate('/admin/login')
-
+        setIsLoggedIn(false)
+        toast.error('Unauthorized');
+        navigate('/admin/login');
       }
-    }
-    fetchInfo()
+    };
 
-  }, [navigate])
-
-
-  useEffect(() => {
-    dispatch(fetchdata())
+    fetchInfo();
+    dispatch(fetchdata());
 
     // eslint-disable-next-line
-  }, [])
+  }, [dispatch]);
 
 
 
@@ -85,12 +67,12 @@ function Dashboard() {
     <>
       <div>
         <header className='flex justify-around items-center mb-10 mt-5'>
-        <h1 className='text-xl font-bold text-gray-600 mt-5 text-center sm:text-2xl md:text-3xl'>Dashboard of <span className='font-extrabold text-gray-700'> {name}</span></h1>
-        <div className=' '>
-          <button className='p-2 bg-red-400 text-white font-semibold rounded hover:bg-red-500/70' onClick={handleLogOut}>Log Out</button>
-        </div>
+          <h1 className='text-xl font-bold text-gray-600 mt-5 text-center sm:text-2xl md:text-3xl'>Dashboard of <span className='font-extrabold text-gray-700'> {name}</span></h1>
+          <div className=' '>
+            <button className='p-2 bg-red-400 text-white font-semibold rounded hover:bg-red-500/70' onClick={handleLogOut}>Log Out</button>
+          </div>
         </header>
-        
+
 
         {
           turfs.length > 0 ? turfs.map((t, i) => (
@@ -107,7 +89,7 @@ function Dashboard() {
           )) : <div className='bg-red-300 p-2 text-center text-red-700 font-bold'> No Booking Yet!</div>
         }
 
-        
+
       </div>
 
 

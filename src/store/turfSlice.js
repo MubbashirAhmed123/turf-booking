@@ -12,9 +12,7 @@ const initialState = {
 // Async thunk for fetching data
 export const fetchSlots = createAsyncThunk("turf/fetchSlots", async (_, { rejectWithValue }) => {
   try {
-    const res = await fetch(`${baseUrl}/allSlots`,{
-      mode:'cors'
-    });
+    const res = await fetch(`${baseUrl}/allSlots`);
     const data = await res.json();
     if (!res.ok) {
       throw new Error(data.message || "Failed to fetch slots");
@@ -22,38 +20,6 @@ export const fetchSlots = createAsyncThunk("turf/fetchSlots", async (_, { reject
     return data;
   } catch (error) {
     return rejectWithValue(error.message);
-  }
-});
-
-export const login = createAsyncThunk("admin/login", async (loginData, { rejectWithValue }) => {
-  const { email, turfName, password } = loginData;
-
-  if (!(email && password && turfName)) {
-      toast.error('All fields are required.');
-      return rejectWithValue('All fields are required.');
-  }
-
-  try {
-      const res = await fetch(`${baseUrl}/login`, {
-          method: 'POST',
-          headers: {
-              "Content-Type": "application/json",
-          },
-          body: JSON.stringify(loginData),
-      });
-
-      if (!res.ok) {
-          const data = await res.json();
-          toast.error(data.msg);
-          return rejectWithValue(data.msg);
-      }
-
-      const data = await res.json();
-      toast.success(data.msg);
-      return data;
-  } catch (err) {
-      toast.error('Login failed!', err.message);
-      return rejectWithValue(err.message);
   }
 });
 
@@ -83,7 +49,6 @@ export const bookSlot = createAsyncThunk("turf/bookSlot", async (slotData, { get
 
   try {
     const response = await fetch(`${baseUrl}/add`, {
-      mode:'cors',
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -108,8 +73,6 @@ export const bookSlot = createAsyncThunk("turf/bookSlot", async (slotData, { get
 export const removeSlot = createAsyncThunk("turf/removeSlot", async (slotId, { rejectWithValue }) => {
   try {
     const response = await fetch(`${baseUrl}/deleteLast`, {
-      mode:'cors',
-
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -149,22 +112,6 @@ const turfSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
-      .addCase(login.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-    })
-    .addCase(login.fulfilled, (state, action) => {
-        state.loading = false;
-        state.isLoggedIn = true;
-        state.token = action.payload.token;
-        state.name = action.payload.name;
-        localStorage.setItem('token', action.payload.token);
-        localStorage.setItem('name', action.payload.name);
-    })
-    .addCase(login.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-    })
       .addCase(bookSlot.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -192,23 +139,5 @@ const turfSlice = createSlice({
   },
 });
 
-
-export const isAuthenticated = createAsyncThunk("auth/isAuthenticated", async (_, { rejectWithValue }) => {
-  const token = localStorage.getItem("token");
-  try {
-    const res = await fetch(`${baseUrl}/dashboard`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    const data = await res.json();
-    if (!res.ok) {
-      toast.error(data.msg);
-      throw new Error(data.msg);
-    }
-  } catch (error) {
-    return rejectWithValue(error.message);
-  }
-});
 
 export default turfSlice.reducer;

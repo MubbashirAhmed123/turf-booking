@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { isAuthenticated, removeSlot } from '../store/turfSlice'
+import { removeSlot } from '../store/turfSlice'
 import { toast } from 'react-toastify'
+import useAuth from '../utils/useAuth'
 import Confirmation from '../Components/Confirmation'
 import Pagination from '../Components/Pagination'
 
@@ -47,11 +48,7 @@ function Dashboard() {
     setCurrentPage(pageNumber)
   }
 
-
-  useEffect(()=>{
-    dispatch(isAuthenticated())
-  },[dispatch,navigate])
-  
+  useAuth()
 
   return (
     <>

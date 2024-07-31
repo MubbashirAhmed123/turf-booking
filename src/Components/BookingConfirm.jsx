@@ -12,7 +12,6 @@ function BookingConfirm() {
 
 
   const { allSlots } = useSelector(state => state.turf)
-  console.log(allSlots)
   const len = allSlots.length
 
 

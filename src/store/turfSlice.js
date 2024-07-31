@@ -12,7 +12,9 @@ const initialState = {
 // Async thunk for fetching data
 export const fetchSlots = createAsyncThunk("turf/fetchSlots", async (_, { rejectWithValue }) => {
   try {
-    const res = await fetch(`${baseUrl}/allSlots`);
+    const res = await fetch(`${baseUrl}/allSlots`,{
+      mode:'no-cors'
+    });
     const data = await res.json();
     if (!res.ok) {
       throw new Error(data.message || "Failed to fetch slots");
@@ -49,6 +51,7 @@ export const bookSlot = createAsyncThunk("turf/bookSlot", async (slotData, { get
 
   try {
     const response = await fetch(`${baseUrl}/add`, {
+      mode:'no-cors',
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -73,6 +76,8 @@ export const bookSlot = createAsyncThunk("turf/bookSlot", async (slotData, { get
 export const removeSlot = createAsyncThunk("turf/removeSlot", async (slotId, { rejectWithValue }) => {
   try {
     const response = await fetch(`${baseUrl}/deleteLast`, {
+      mode:'no-cors',
+
       method: "POST",
       headers: {
         "Content-Type": "application/json",

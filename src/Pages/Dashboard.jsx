@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { removeSlot } from '../store/turfSlice'
@@ -18,10 +18,6 @@ function Dashboard() {
 
   const turfs = allSlots.filter(turf => turf.turfName === name);
 
-  if(!isAuth){
-    navigate('/admin/login')
-    return
-  }
 
   const handleClick = id => {
     const res = window.confirm('Are you sure you want to cancel this booking?');
@@ -53,6 +49,13 @@ function Dashboard() {
     setCurrentPage(pageNumber)
   }
 
+
+  // useEffect(()=>{
+  //   if(!isAuth){
+  //     navigate('/admin/login')
+  //     return
+  //   }
+  // },[navigate])
   
 
   return (

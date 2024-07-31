@@ -36,6 +36,7 @@ function Admin() {
         try {
             const res = await fetch(`${baseUrl}/login`, {
                 method: 'POST',
+                mode:'no-cors',
                
                 headers: {
                     "Content-Type": "application/json",

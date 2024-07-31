@@ -11,7 +11,8 @@ export const turf=[
 
     {
         turfName:'H R Sports Arena',
-        price:800,
+        price:500,
+        priceForWeekend:600,
         location:'M S K Mill Gulbarga',
         desc:"Welcome to HR Sports Arena, your ultimate destination for sports excellence in Gulbarga! Conveniently located at MSK Mill, our state-of-the-art turf ground promises to elevate your sporting experience to new heights. Whether you're a passionate athlete, a recreational player, or a team looking for a top-notch facility, HR Sports Arena has everything you need and more",
         img:img1,
@@ -22,6 +23,7 @@ export const turf=[
     {
         turfName:'Orbit Play Arena',
         price:700,
+        priceForWeekend:800,
         location:'Naganalli Cross Gulbarga',
         desc:"Nestled in the heart of Gulbarga, Orbit Play Arena stands as the epitome of sports excellence and recreational fun. Located conveniently within the Orbit Mall premises, our arena offers a haven for athletes, enthusiasts, and families alike, providing a plethora of sporting activities and entertainment options for all ages and interests.",
         img:img2,
@@ -31,6 +33,7 @@ export const turf=[
     {
         turfName:'Patel Sports Hub',
         price:600,
+        priceForWeekend:700,
         location:'Hagarga Road',
         desc:"Welcome to Patel Sports Hub, your go-to destination for all things sports and recreation in Gulbarga! Conveniently located on Hagarga Road, our state-of-the-art facility is designed to cater to the diverse needs of athletes, fitness enthusiasts, and families looking for a fun-filled experience",
         img:img3,
@@ -40,6 +43,7 @@ export const turf=[
     {
         turfName:'Battle Ground Sports Arena',
         price:600,
+        priceForWeekend:700,
         location:'M S K Mill Gulbarga',
         desc:"Step into the world of sports excellence at Battle Ground Sports Arena, conveniently located on MSK MILL Road in Gulbarga. As your premier sporting hub, we offer a diverse range of facilities and services to cater to athletes, teams, and sports enthusiasts of all ages and skill levels.",
         img:img1,
@@ -50,7 +54,9 @@ export const turf=[
     },
     {
         turfName:'KBN Turf',
-        price:1000,
+        price:700,
+        priceForWeekend:800,
+
         location:'Santraswadi Gulbarga',
         desc:"Embrace the spirit of sports excellence at KBN Turf, your premier destination for all things sports in Santraswadi, Gulbarga. Situated in the heart of this vibrant community, our expansive turf facility offers a haven for athletes, teams, and enthusiasts to come together and pursue their sporting passions.",
         img:img3,

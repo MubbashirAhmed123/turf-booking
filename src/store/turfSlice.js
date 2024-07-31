@@ -1,69 +1,34 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import { baseUrl } from "../baseUrl";
 
+// Initial state
 const initialState = {
   allSlots: [],
+  loading: false,
+  error: null,
+};
 
-}
+// Async thunk for fetching data
+export const fetchSlots = createAsyncThunk("turf/fetchSlots", async (_, { rejectWithValue }) => {
+  try {
+    const res = await fetch(`${baseUrl}/allSlots`);
+    const data = await res.json();
+    if (!res.ok) {
+      throw new Error(data.message || "Failed to fetch slots");
+    }
+    return data;
+  } catch (error) {
+    return rejectWithValue(error.message);
+  }
+});
 
+// Async thunk for booking a slot
+export const bookSlot = createAsyncThunk("turf/bookSlot", async (slotData, { getState, rejectWithValue }) => {
+  const state = getState().turf;
 
-
-const turfSlice = createSlice({
-  name: 'turf',
-  initialState,
-  reducers: {
-
-
-
-    setSlots(state, action) {
-
-      state.allSlots = action.payload
-
-    },
-
-
-    bookSlot(state, action) {
-
-      const { turfName } = action.payload
-      console.log(action.payload)
-
-      const turfList = [
-        "H R Sports Arena",
-        "Orbit Play Arena",
-        "Patel Sports Hub",
-        "Battle Ground Sports Arena",
-        "KBN Turf",
-      ];
-
-      if (turfList.includes(turfName)) {
-        addToSlot(state, action);
-      } else {
-        console.log("no turf");
-      }
-
-    
-
-    },
-
-    removeSlot(state, action) {
-      console.log(action.payload)
-      removeSlotFromDb({ _id: action.payload })
-
-    },
-
-
-
-  },
-
-
-})
-
-const addToSlot = (state, action) => {
-
-  const {from, to, turfName } = action.payload
-
-  const isSlotAvailable = state.allSlots.some(slot => {
+  const { from, to, turfName } = slotData;
+  const isSlotAvailable = state.allSlots.some((slot) => {
     const sameTurf = turfName === slot.turfName;
 
     const slotFrom = new Date(slot.from);
@@ -71,113 +36,108 @@ const addToSlot = (state, action) => {
     const newFrom = new Date(from);
     const newTo = new Date(to);
 
-    // Check for partial overlap
-    const partialOverlap = (newFrom < slotTo) && (newTo > slotFrom);
+    const partialOverlap = newFrom < slotTo && newTo > slotFrom;
+    const completeOverlap = newFrom >= slotFrom && newTo <= slotTo;
 
-    // Check if the new slot is entirely within the existing slot
-    const completeOverlap = (newFrom >= slotFrom) && (newTo <= slotTo);
-
-    // Return true if it's the same turf and there's any kind of overlap
     return sameTurf && (partialOverlap || completeOverlap);
   });
 
-
-  // const isSlotAvailable = state.allSlots.some(slot => {
-
-  //   const sameTurf = turfName === slot.turfName
-
-  //   const overlap = (new Date(from)<new Date(slot.to)) && (new Date(to)>new Date(slot.from))
-
-  //   return sameTurf && overlap
-  // })
-
-  // console.log(isSlotAvailable)
-  if (!isSlotAvailable) {
-
-    sendToDb(action.payload)
-    // toast.success('Your Slot Has Been Booked Successfully!')
-
-  } else {
-    toast.info('Already That Time Slots Is Booked.')
-
+  if (isSlotAvailable) {
+    toast.info("Already That Time Slots Is Booked.");
+    return rejectWithValue("Slot already booked");
   }
 
-
-}
-
-
-
-export const { bookSlot, removeSlot, setSlots,handleLogin } = turfSlice.actions
-export default turfSlice.reducer
-
-export const fetchdata = () => async (dispatch) => {
-  try {
-    const res = await fetch(`${baseUrl}/allSlots`)
-    const data = await res.json()
-
-    dispatch(setSlots(data))
-  } catch (error) {
-
-  }
-}
-
-
-const sendToDb = async (data) => {
   try {
     const response = await fetch(`${baseUrl}/add`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(data)
+      body: JSON.stringify(slotData),
     });
 
-    const result = await response.json()
-    console.log(result)
-    if(response.status===200){
-      toast.success(result.msg)
-
-    }else{
-      toast.error(result.msg)
+    const result = await response.json();
+    if (response.status === 200) {
+      toast.success(result.msg);
+      return slotData;
+    } else {
+      toast.error(result.msg);
+      throw new Error(result.msg);
     }
-
   } catch (error) {
-    console.log(error)
+    return rejectWithValue(error.message);
   }
+});
 
-
-}
-
-
-
-const removeSlotFromDb = async (id) => {
-  console.log(id)
+// Async thunk for removing a slot
+export const removeSlot = createAsyncThunk("turf/removeSlot", async (slotId, { rejectWithValue }) => {
   try {
-
     const response = await fetch(`${baseUrl}/deleteLast`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(id)
+      body: JSON.stringify({ _id: slotId }),
     });
 
-    const result = await response.json()
-    if(response.status===200){
-      toast.success(result.msg)
-
-    }else{
-      toast.error(result.msg)
+    const result = await response.json();
+    if (response.status === 200) {
+      toast.success(result.msg);
+      return slotId;
+    } else {
+      toast.error(result.msg);
+      throw new Error(result.msg);
     }
-    // toast.success('Your Booking Has Been Cancelled')
-
-
   } catch (error) {
-    console.log(error)
+    return rejectWithValue(error.message);
   }
+});
 
-}
+// Slice
+const turfSlice = createSlice({
+  name: "turf",
+  initialState,
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchSlots.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchSlots.fulfilled, (state, action) => {
+        state.loading = false;
+        state.allSlots = action.payload;
+      })
+      .addCase(fetchSlots.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(bookSlot.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(bookSlot.fulfilled, (state, action) => {
+        state.loading = false;
+        state.allSlots.push(action.payload);
+      })
+      .addCase(bookSlot.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(removeSlot.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(removeSlot.fulfilled, (state, action) => {
+        state.loading = false;
+        state.allSlots = state.allSlots.filter((slot) => slot._id !== action.payload);
+      })
+      .addCase(removeSlot.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
+  },
+});
 
 
-
-
+export default turfSlice.reducer;

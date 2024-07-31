@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { baseUrl } from '../baseUrl'
 
 
-function Admin({setIsLoggedIn}) {
+function Admin() {
 
     const [loginData, setLoginData] = useState({
         email: '',
@@ -47,10 +47,11 @@ function Admin({setIsLoggedIn}) {
             const data = await res.json()
             if (res.status === 404) {
                 toast.error(data.msg)
+                return
 
             } else {
                 toast.success(data.msg)
-                setIsLoggedIn(true)
+                localStorage.setItem('token',data.token)
                 localStorage.setItem('name',data.name)
                 navigate(`/admin/dashboard/${data.name}`)
 

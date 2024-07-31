@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { fetchdata, removeSlot } from "../store/turfSlice"
+import { removeSlot } from "../store/turfSlice"
 import { baseUrl } from "../baseUrl"
 import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
@@ -12,6 +12,7 @@ function BookingConfirm() {
 
 
   const { allSlots } = useSelector(state => state.turf)
+  console.log(allSlots)
   const len = allSlots.length
 
 
@@ -59,11 +60,6 @@ function BookingConfirm() {
   }
 
  
-  useEffect(() => {
-  
-  dispatch(fetchdata())
-
-  }, [dispatch])
 
  
   return (

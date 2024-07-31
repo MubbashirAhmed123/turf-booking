@@ -1,11 +1,16 @@
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faArrowRight, faBackward, faClose,  faHouse } from "@fortawesome/free-solid-svg-icons"
-import {  useState } from "react"
+import {  useEffect, useState } from "react"
 import { motion } from "framer-motion"
-function Navbar({isLoggedIn}) {
-  
+import { isAuthenticated } from "../store/turfSlice"
+import { toast } from "react-toastify"
+import { useDispatch } from "react-redux"
+import useAuth from "../utils/useAuth"
+function Navbar() {
+
   const[menu,SetMenu]=useState(false)
+
   const name=localStorage.getItem('name')
   const location=useLocation()
   const navigate=useNavigate()
@@ -21,11 +26,12 @@ function Navbar({isLoggedIn}) {
   }
 
 
+
   return (
     <>
      <div className="sm:hidden ">
       <FontAwesomeIcon icon={faArrowRight}size="xl" className="m-3" onClick={handleMenu}/>
-      {isLoggedIn ? <Link to={`/admin/dashboard/${name}`} className="fixed top-2 right-5 px-2 py-2 rounded bg-green-400/70 text-green-700 font-bold hover:bg-green-400">dashboard</Link> :<Link to='/admin/login' className="fixed top-2 right-5 px-2 py-2 rounded bg-green-400/70 text-green-700 font-bold hover:bg-green-400">Admin</Link>}
+      {name ? <Link to={`/admin/dashboard/${name}`} className="fixed top-2 right-5 px-2 py-2 rounded bg-green-400/70 text-green-700 font-bold hover:bg-green-400">dashboard</Link> :<Link to='/admin/login' className="fixed top-2 right-5 px-2 py-2 rounded bg-green-400/70 text-green-700 font-bold hover:bg-green-400">Admin</Link>}
     </div>
    
    {menu &&
@@ -52,7 +58,7 @@ function Navbar({isLoggedIn}) {
 
         <Link to='/booking_confirmation' className="bg-green-300 px-2 py-2 rounded font-semibold hover:bg-green-400 transition">Your booking</Link>
         <Link to='/booked_slots' className="py-2 px-1 rounded bg-green-300 font-semibold hover:bg-green-500 transition">See Booked Slots</Link>
-         {isLoggedIn ? <Link to={`/admin/dashboard/${name}`} className="py-2 px-2 bg-green-500/80 font-semibold rounded  hover:bg-green-500 transition ">Dashboard</Link> :<Link to='/admin/login' className="py-2 px-2 bg-green-500/80 font-semibold rounded  hover:bg-green-500 transition ">Admin</Link>}
+         {name ? <Link to={`/admin/dashboard/${name}`} className="py-2 px-2 bg-green-500/80 font-semibold rounded  hover:bg-green-500 transition ">Dashboard</Link> :<Link to='/admin/login' className="py-2 px-2 bg-green-500/80 font-semibold rounded  hover:bg-green-500 transition ">Admin</Link>}
       </ul>
     </div>
 

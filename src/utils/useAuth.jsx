@@ -18,7 +18,6 @@ function useAuth() {
             const res=await fetch(`${baseUrl}/dashboard`,{
                 headers:{
                     'Authorization': `Bearer ${token}`
-
                 }
                 
             })

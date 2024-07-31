@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { removeSlot } from '../store/turfSlice'
+import { isAuthenticated, removeSlot } from '../store/turfSlice'
 import { toast } from 'react-toastify'
-import useAuth from '../utils/useAuth'
 import Confirmation from '../Components/Confirmation'
 import Pagination from '../Components/Pagination'
 
@@ -12,7 +11,6 @@ function Dashboard() {
   const { allSlots } = useSelector(state => state.turf);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const isAuth = useAuth();
   const[currentPage,setCurrentPage]=useState(1)
   const name = localStorage.getItem('name');
 
@@ -50,12 +48,9 @@ function Dashboard() {
   }
 
 
-  // useEffect(()=>{
-  //   if(!isAuth){
-  //     navigate('/admin/login')
-  //     return
-  //   }
-  // },[navigate])
+  useEffect(()=>{
+    dispatch(isAuthenticated())
+  },[dispatch,navigate])
   
 
   return (

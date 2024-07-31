@@ -21,7 +21,7 @@ function App() {
   const dispatch=useDispatch()
 
   useEffect(()=>{
-    dispatch(fetchSlots())
+    const res=dispatch(fetchSlots())
 // eslint-disable-next-line
   },[dispatch])
 

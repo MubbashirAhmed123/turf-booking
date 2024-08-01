@@ -17,11 +17,11 @@ const useAuth = () => {
                 const res = await fetch(`${baseUrl}/dashboard`, {
                     method: 'GET',
                     headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
+                         'Content-Type': 'application/json',
+                         'Authorization': `Bearer ${token}`
                     }
                 });
-
+                const data=await res.json()
 
                 if (!res.ok) {
                     const errorData = await res.json();
